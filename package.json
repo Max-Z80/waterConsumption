@@ -1,5 +1,9 @@
 {
-  "name": "consumptionchecker",
+  "name": "waterConsumption",
+  "author": {
+    "name": "Max-Z80",
+    "email": "chaillet.dev@gmail.com"
+  },
   "version": "0.1.0",
   "private": true,
   "dependencies": {
