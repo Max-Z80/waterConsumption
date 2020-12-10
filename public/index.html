@@ -1,40 +1,97 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="utf-8">
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="theme-color" content="#000000">
-    <!--
-      manifest.json provides metadata used when your web app is added to the
-      homescreen on Android. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
+    <title>Water consumption at Bevenais</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+      integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu"
+      crossorigin="anonymous"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/public/api.js"></script>
+    <script src="/public/consumptionFormPanel.js"></script>
+    <script src="/public/menu.js"></script>
+    <script src="/public/chart.js"></script>
   </head>
-  <body>
-    <noscript>
-      You need to enable JavaScript to run this app.
-    </noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+  <body style="padding:20px;">
+    <div style="flex: 0 0 400px; text-align: center;">
+      <h1>Water consumption</h1>
+    </div>
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button
+            type="button"
+            class="navbar-toggle collapsed"
+            data-toggle="collapse"
+            data-target="#bs-example-navbar-collapse-1"
+            aria-expanded="false"
+          >
+            <span class="sr-only">Toggle navigation</span>
+          </button>
+          <a class="navbar-brand" href="#"></a>
+        </div>
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li id="newLink">
+              <a
+                onClick="menu.setIsNewMenuItemSelected(true);consumptionFormPanel.addConsumption();"
+                >New</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div id="addPanel" class="panel panel-primary" style="display:none;">
+      <div class="panel-heading">Add consumption</div>
+      <div class="panel-body">
+        <form id="myForm" class="form-inline">
+          <div class="form-group">
+            <label for="consumptionDate">Date</label>
+            <input type="date" class="form-control" name="consumptionDate" />
+          </div>
+          <div class="form-group">
+            <label for="consumptionM3">m^3</label>
+            <input
+              type="number"
+              class="form-control"
+              name="consumptionM3"
+              placeholder="1234.1"
+            />
+          </div>
+          <button type="submit" class="btn btn-primary btn-sm">
+            Send
+          </button>
+        </form>
+        <button
+          class="btn btn-primary btn-sm"
+          onClick="consumptionFormPanel.setIsHidden();menu.setIsNewMenuItemSelected(false);"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-6">
+          <canvas id="myChart"> </canvas>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      var consumptionFormPanel = new ConsumptionFormPanel();
+      var menu = new Menu();
+      renderChart();
+    </script>
   </body>
 </html>
